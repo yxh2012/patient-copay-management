@@ -1,0 +1,48 @@
+HELP.md
+# Ignore Maven target directory
+target/
+
+# Build output
+build/
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+
+### Spring Tool Suite ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code ###
+.vscode/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# Application-specific logs
+logs/
+*.log.*
+
+# Database files (if using H2 for testing)
+*.db
+*.trace.db
+
+# Temporary files
+*.tmp
+*.temp
