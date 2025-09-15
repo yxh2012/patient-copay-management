@@ -10,7 +10,8 @@ No authentication required for this demonstration project.
 - `200 OK` - Request successful
 - `201 Created` - Resource created successfully
 - `400 Bad Request` - Invalid input or malformed request
-- `404 Not Found` - Patient, copay, or payment method not found
+- `404 Not Found` - Patient, copay, payment method not found, or endpoint does not exist
+- `405 Method Not Allowed` - HTTP method not supported for this endpoint
 - `409 Conflict` - Duplicate request detected
 - `422 Unprocessable Entity` - Business validation failed
 - `500 Internal Server Error` - Unexpected system error

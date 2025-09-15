@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
  * Enumeration of standardized error codes with corresponding HTTP status mappings.
  */
 public enum ErrorCode {
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND),
     INPUT_INVALID(HttpStatus.BAD_REQUEST),
     PARAMETER_INVALID(HttpStatus.BAD_REQUEST),

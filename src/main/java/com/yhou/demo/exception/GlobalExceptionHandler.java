@@ -6,10 +6,12 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.time.Instant;
 import java.util.stream.Collectors;
@@ -101,6 +103,35 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(ErrorCode.VALIDATION_ERROR, message, request);
     }
 
+    /**
+     * HTTP method not supported (e.g. POST to GET endpoint)
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleMethodNotSupported(
+            HttpRequestMethodNotSupportedException ex,
+            HttpServletRequest request
+    ) {
+        String message = String.format("Method '%s' not supported for this endpoint. Supported methods: %s",
+                ex.getMethod(), ex.getSupportedHttpMethods());
+
+        log.warn("Method not supported: {}", message);
+        return buildErrorResponse(ErrorCode.METHOD_NOT_ALLOWED, message, request);
+    }
+
+    /**
+     * No handler found for request (404 errors)
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotFound(
+            NoHandlerFoundException ex,
+            HttpServletRequest request
+    ) {
+        String message = String.format("Endpoint not found: %s %s", ex.getHttpMethod(), ex.getRequestURL());
+        log.warn("Endpoint not found: {}", message);
+
+        return buildErrorResponse(ErrorCode.RESOURCE_NOT_FOUND, message, request);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpected(Exception ex, HttpServletRequest request) {
         log.error("Unexpected error", ex);
@@ -131,6 +162,7 @@ public class GlobalExceptionHandler {
             case MISSING_HEADER -> false;
             case DUPLICATE_REQUEST -> false;
             case BUSINESS_VALIDATION_ERROR -> false;
+            case METHOD_NOT_ALLOWED -> false;
 
             // Default to non-retryable for safety
             default -> false;

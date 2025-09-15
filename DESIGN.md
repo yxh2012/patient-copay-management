@@ -358,7 +358,7 @@ Simulates realistic payment processor behavior with 2-5 second delays and 80% su
 
 ### 6. Error Handling and Validation
 
-Uses GlobalExceptionHandler with structured error responses that include error codes, messages, and retryable flags. Validates input at multiple layers (controller annotations, service business rules) to catch errors early. Provides consistent JSON error format across all endpoints without exposing internal system details, helping clients determine appropriate retry strategies.
+Uses GlobalExceptionHandler with structured error responses that include error codes, messages, and retryable flags. Validates input at multiple layers (controller annotations, service business rules) to catch errors early. Handles common HTTP errors including 404 (endpoint not found) and 405 (method not allowed) with consistent JSON format. Provides structured error responses across all endpoints without exposing internal system details, helping clients determine appropriate retry strategies.
 
 ### 7. Database Transaction Management
 
@@ -392,7 +392,7 @@ Follows standard REST conventions with resource-based URLs and appropriate HTTP 
 Maintains consistent data formats and conventions across all endpoints:
 
 - **Content Type**: All requests and responses use `application/json`
-- **HTTP Status Codes**: Standard codes (200, 201, 400, 404, 409, 500) with semantic meaning
+- **HTTP Status Codes**: Standard codes (200, 201, 400, 404, 405, 409, 422, 500) with semantic meaning
 - **Request Headers**: `Duplicate-Request-Key` for idempotency, `Content-Type` required for POST
 - **Response Structure**: Consistent wrapper objects (ListCopaysResponse, SubmitPaymentResponse, CopayAISummaryResponse)
 - **Field Naming**: camelCase for JSON fields, snake_case for database columns
